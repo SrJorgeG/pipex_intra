@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:36:04 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/16 06:30:17 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/19 04:00:05 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,12 @@ void	exec_cmd(char *line, char **env)
 
 	split = ft_split(line, ' ');
 	if (!split || !*split)
-		return (ft_free_split(split));
+		return (print_error(NULL), ft_free_split(split));
 	i = 0;
-	if (!access(*split, F_OK | X_OK) && ft_strnstr(*split, "./", 2))
-	{
-		if (execve(*split, split, env) == -1)
-			return (ft_free_split(split));
-	}
-	else if (access(*split, F_OK | X_OK) && ft_strchr(*split, '/'))
-		return (ft_free_split(split));
-	else
-	{
-		cmd = get_path(*split, env);
-		if (cmd == NULL || execve(cmd, split, env) == -1)
-			return (ft_free_split(split));
-		free(cmd);
-	}
+	cmd = get_path(*split, env);
+	if (cmd == NULL || execve(cmd, split, env) == -1)
+		return (print_error(*split), ft_free_split(split));
+	free(cmd);
 	return ;
 }
 

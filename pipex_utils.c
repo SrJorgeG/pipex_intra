@@ -6,11 +6,28 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 06:44:25 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/16 06:18:05 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/19 04:02:28 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	print_error(char *str)
+{
+	if (!str)
+	{
+		write(2, " ", 1);
+		write(2, ": command not found\n", 20);
+		return ;
+	}
+	if (errno == 2)
+	{
+		write(2, str, ft_strlen(str));
+		write(2, ": command not found\n", 20);
+	}
+	else
+		perror(str); 
+}
 
 void	ft_free_split(char **split)
 {
@@ -60,7 +77,7 @@ char	*get_path(char *cmd, char **env)
 		path_part = ft_strjoin(path_env[i], "/");
 		exec = ft_strjoin(path_part, cmd);
 		free(path_part);
-		if (!access(exec, F_OK | X_OK))
+		if (!access(exec, F_OK))
 			return (ft_free_split(path_env), exec);
 		free(exec);
 	}
