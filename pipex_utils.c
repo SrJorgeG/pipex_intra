@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 06:44:25 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/19 04:02:28 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/21 12:49:20 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ void	print_error(char *str)
 {
 	if (!str)
 	{
-		write(2, " ", 1);
-		write(2, ": command not found\n", 20);
-		return ;
+		write(STDERR_FILENO, " ", 1);
+		write(STDERR_FILENO, ": command not found\n", 20);
+		exit(EXIT_FAILURE);
 	}
 	if (errno == 2)
 	{
-		write(2, str, ft_strlen(str));
-		write(2, ": command not found\n", 20);
+		write(STDERR_FILENO, str, ft_strlen(str));
+		write(STDERR_FILENO, ": command not found\n", 20);
+		exit(EXIT_FAILURE);
 	}
 	else
 		perror(str); 
