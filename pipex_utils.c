@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 06:44:25 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/24 04:18:32 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/24 16:40:14 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char	*find(char **env)
 	char	*sub;
 
 	i = -1;
+	sub = NULL;
 	while (env[++i])
 	{
 		j = 0;
@@ -59,7 +60,8 @@ char	*find(char **env)
 			return (free(sub), env[i] + j + 1);
 		free(sub);
 	}
-	return (NULL);
+	write(STDERR_FILENO, "path: path not found\n", 22);
+	exit(EXIT_FAILURE);
 }
 
 char	*get_path(char *cmd, char **env)
@@ -72,11 +74,6 @@ char	*get_path(char *cmd, char **env)
 
 	i = 0;
 	path = find(env);
-	if (!path)
-	{
-		write(STDERR_FILENO, "path: path not found\n", 22);
-		exit(EXIT_FAILURE);
-	}
 	path_env = ft_split(path, ':');
 	if (!path_env)
 		return (NULL);
