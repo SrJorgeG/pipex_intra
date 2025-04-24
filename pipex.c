@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:36:04 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/24 02:35:48 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/24 04:17:25 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@ void	exec_cmd(char *line, char **env)
 	char	*cmd;
 	char	**split;
 
+	while (*line == ' ' || (*line >= 9 && *line <= 13))
+		line++;
 	split = ft_split(line, ' ');
 	if (!split || !*split)
 		return (print_error(NULL), ft_free_split(split));
-	if (line[0] == '/' || line[0] == '.')
-		if (execve(split[0], &split[1], env) == -1)
+	if (split[0][0] == '/' || split[0][0] == '.')
+		if (execve(split[0], &split[0], env) == -1)
 			return (print_error(*split), ft_free_split(split));
 	cmd = get_path(*split, env);
 	if (cmd == NULL || execve(cmd, split, env) == -1)
@@ -63,10 +65,15 @@ void	second_child(int pipe[2], char **av, char **env, int fd)
 	exec_cmd(av[3], env);
 }
 
-int	*checkfd(char *av[])
+int	*checkfd(char *av[], char **env)
 {
 	int	*fd;
 
+	if (!env)
+	{
+		write(STDERR_FILENO, "env: not a correct enviroment\n", 31);
+		exit(EXIT_FAILURE);
+	}
 	fd = malloc(2 * sizeof(int));
 	if (!fd)
 		exit(EXIT_FAILURE);
@@ -94,9 +101,9 @@ int	main(int ac, char *av[], char **env)
 
 	if (ac != 5)
 		return (write(2, "Syntax: ./pipex infile cmd1 cmd2 outfile\n", 41));
-	fd = checkfd(av);
+	fd = check(av, env);
 	if (pipe(pipe_fd) == -1)
-		write(STDERR_FILENO, "pipe: pipe not created\n", 25);
+		write(STDERR_FILENO, "pipe: pipe not created\n", 24);
 	pid_1 = fork();
 	if (pid_1 == -1)
 		exit(EXIT_FAILURE);

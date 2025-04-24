@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 06:44:25 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/24 02:34:29 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/24 04:18:32 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,16 @@ char	*get_path(char *cmd, char **env)
 	char	**path_env;
 	char	*path_part;
 	char	*exec;
+	char	*path;
 
 	i = 0;
-	path_env = ft_split(find(env), ':');
+	path = find(env);
+	if (!path)
+	{
+		write(STDERR_FILENO, "path: path not found\n", 22);
+		exit(EXIT_FAILURE);
+	}
+	path_env = ft_split(path, ':');
 	if (!path_env)
 		return (NULL);
 	while (path_env[++i])
