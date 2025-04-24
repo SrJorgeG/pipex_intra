@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 20:36:04 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/24 04:17:25 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/24 06:29:51 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	second_child(int pipe[2], char **av, char **env, int fd)
 	exec_cmd(av[3], env);
 }
 
-int	*checkfd(char *av[], char **env)
+int	*check(char *av[], char **env)
 {
 	int	*fd;
 
@@ -83,7 +83,7 @@ int	*checkfd(char *av[], char **env)
 		write(STDERR_FILENO, "Input: infile not valid\n", 25);
 		exit(EXIT_FAILURE);
 	}
-	fd[1] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC, 0664);
+	fd[1] = open(av[4], O_CREAT | O_WRONLY | O_TRUNC | O_APPEND, 0664);
 	if (fd[1] < 0)
 	{
 		write(STDERR_FILENO, "Output: outfile not valid\n", 27);
