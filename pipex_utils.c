@@ -6,7 +6,7 @@
 /*   By: jgomez-d <jgomez-d@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 06:44:25 by jgomez-d          #+#    #+#             */
-/*   Updated: 2025/04/21 12:49:20 by jgomez-d         ###   ########.fr       */
+/*   Updated: 2025/04/24 02:34:29 by jgomez-d         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	print_error(char *str)
 		exit(EXIT_FAILURE);
 	}
 	else
-		perror(str); 
+		write(STDERR_FILENO, "cmd: command not found\n", 23);
 }
 
 void	ft_free_split(char **split)
